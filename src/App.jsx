@@ -1,29 +1,31 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import RecipeDetails from './pages/RecipeDetails';
-import Profile from './pages/Profile';
-import AddRecipe from './pages/AddRecipe';
-import EditRecipe from './pages/EditRecipe';
 import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+
+// Lazy load components
+const RecipeDetails = lazy(() => import('./pages/RecipeDetails'));
+const Profile = lazy(() => import('./pages/Profile'));
+const AddRecipe = lazy(() => import('./pages/AddRecipe'));
+const EditRecipe = lazy(() => import('./pages/EditRecipe'));
 
 function App() {
   return (
     <Router>
-      <div>
+      <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/recipe/:id" element={<RecipeDetails />} />
+          <Route path="/recipe/:id/*" element={<RecipeDetails />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/add-recipe" element={<AddRecipe />} />
-          <Route path="/edit-recipe/:id" element={<EditRecipe />} />
+          <Route path="/add-recipe" element={<ProtectedRoute element={<AddRecipe />} />} />
+          <Route path="/edit-recipe/:id" element={<ProtectedRoute element={<EditRecipe />} />} />
           <Route path="/login" element={<Login />} />
         </Routes>
-      </div>
+      </Suspense>
     </Router>
   );
 }
 
 export default App;
-
