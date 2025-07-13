@@ -1,16 +1,27 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import RecipeDetails from './pages/RecipeDetails';
+import Profile from './pages/Profile';
+import AddRecipe from './pages/AddRecipe';
+import EditRecipe from './pages/EditRecipe';
 import './App.css';
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
+      <div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/recipe/:id" element={<RecipeDetails />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/add-recipe" element={<AddRecipe />} />
+          <Route path="/edit-recipe/:id" element={<EditRecipe />} />
+        </Routes>
+      </div>
     </Router>
   );
 }
 
 export default App;
+
