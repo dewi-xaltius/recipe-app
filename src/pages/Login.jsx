@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import auth from '../services/auth';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || '/profile';
 
   const handleLogin = (e) => {
     e.preventDefault();
     // For demonstration purposes, consider login successful if username and password are not empty
     if (username && password) {
-      // Redirect to profile page
-      navigate('/profile');
+      auth.login(() => {
+        navigate(from, { replace: true });
+      });
     }
   };
 
